@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.airlift</groupId>
     <artifactId>airbase</artifactId>
-    <version>46</version>
+    <version>59</version>
     <relativePath />
   </parent>
 
@@ -82,10 +82,11 @@
     <air.check.skip-pmd>true</air.check.skip-pmd>
     <air.check.skip-jacoco>true</air.check.skip-jacoco>
 
-    <dep.airlift.version>0.119</dep.airlift.version>
+    <dep.airlift.version>0.141-SNAPSHOT</dep.airlift.version>
     <dep.antlr.version>3.5.2</dep.antlr.version>
     <dep.maven-api.version>3.2.5</dep.maven-api.version>
     <dep.fb.nifty.version>0.23.0</dep.fb.nifty.version>
+    <dep.jetty.version>9.3.13.M0</dep.jetty.version>
   </properties>
 
   <dependencyManagement>
@@ -178,7 +179,7 @@
       <dependency>
         <groupId>io.airlift</groupId>
         <artifactId>units</artifactId>
-        <version>${dep.airlift.version}</version>
+        <version>1.0</version>
       </dependency>
 
       <dependency>
@@ -227,6 +228,25 @@
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore</artifactId>
         <version>4.4.1</version>
+      </dependency>
+
+      <!-- jetty -->
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>${dep.jetty.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.jetty.orbit</groupId>
+            <artifactId>javax.servlet</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlet</artifactId>
+        <version>${dep.jetty.version}</version>
       </dependency>
 
       <!-- provides helpers for using Guava with Java 8 streams -->
