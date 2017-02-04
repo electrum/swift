@@ -15,12 +15,13 @@
  */
 package com.facebook.swift.client.guice;
 
-import com.facebook.swift.client.AddressSelector;
-import com.facebook.swift.client.ClientEventHandler;
-import com.facebook.swift.client.MethodInvoker;
 import com.facebook.swift.client.SwiftClient;
 import com.facebook.swift.client.SwiftClientFactory;
 import com.facebook.swift.service.ThriftClientConfig;
+import com.facebook.swift.transport.AddressSelector;
+import com.facebook.swift.transport.ClientEventHandler;
+import com.facebook.swift.transport.MethodInvoker;
+import com.facebook.swift.transport.guice.MethodInvokerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;

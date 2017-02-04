@@ -13,16 +13,17 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client;
+package com.facebook.swift.transport;
 
-import com.google.common.net.HostAndPort;
+import org.apache.thrift.TException;
 
-import java.util.List;
-import java.util.Optional;
+import static java.util.Objects.requireNonNull;
 
-public interface AddressSelector
+public final class SwiftApplicationException
+        extends TException
 {
-    List<HostAndPort> getAddresses(Optional<String> addressSelectionContext);
-
-    default void markdown(HostAndPort address) {}
+    public SwiftApplicationException(Throwable applicationException)
+    {
+        super(requireNonNull(applicationException, "applicationException is null"));
+    }
 }

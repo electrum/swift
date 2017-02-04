@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client;
+package com.facebook.swift.transport;
 
 import javax.annotation.concurrent.ThreadSafe;
 

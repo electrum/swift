@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client;
+package com.facebook.swift.transport;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -23,6 +23,13 @@ import java.util.Optional;
 
 public interface MethodInvoker
 {
+    /**
+     * Invoke the specified method asynchronously.
+     *
+     * If the invocation fails with a known application exception, the future will contain a
+     * SwiftApplicationException wrapper; otherwise the future will contain the raw transport
+     * exception.
+     */
     ListenableFuture<Object> invoke(
             MethodMetadata method,
             List<ClientEventHandler<?>> handlers,

@@ -15,7 +15,7 @@
  */
 package com.facebook.swift.client.nifty;
 
-import com.facebook.swift.client.ConnectionContext;
+import com.facebook.swift.transport.ConnectionContext;
 
 import javax.annotation.concurrent.ThreadSafe;
 

@@ -19,6 +19,7 @@ import com.facebook.swift.service.RuntimeTApplicationException;
 import com.facebook.swift.service.RuntimeTException;
 import com.facebook.swift.service.RuntimeTProtocolException;
 import com.facebook.swift.service.RuntimeTTransportException;
+import com.facebook.swift.transport.SwiftApplicationException;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;

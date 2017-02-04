@@ -15,6 +15,9 @@
  */
 package com.facebook.swift.client;
 
+import com.facebook.swift.transport.ClientEventHandler;
+import com.facebook.swift.transport.MethodInvoker;
+import com.facebook.swift.transport.MethodMetadata;
 import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.ListenableFuture;
 

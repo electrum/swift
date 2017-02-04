@@ -15,7 +15,10 @@
  */
 package com.facebook.swift.client;
 
+import com.facebook.swift.client.StatsClientEventHandler.PerCallMethodStats;
 import com.facebook.swift.service.ThriftMethodStats;
+import com.facebook.swift.transport.ClientEventHandler;
+import com.facebook.swift.transport.ConnectionContext;
 import io.airlift.units.Duration;
 
 import java.util.List;
@@ -27,7 +30,7 @@ import static io.airlift.units.Duration.nanosSince;
 import static java.lang.System.nanoTime;
 
 public class StatsClientEventHandler
-        implements ClientEventHandler<StatsClientEventHandler.PerCallMethodStats>
+        implements ClientEventHandler<PerCallMethodStats>
 {
     private final ConcurrentHashMap<String, ThriftMethodStats> stats = new ConcurrentHashMap<>();
 

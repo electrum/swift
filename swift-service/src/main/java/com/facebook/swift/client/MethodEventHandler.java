@@ -15,6 +15,8 @@
  */
 package com.facebook.swift.client;
 
+import com.facebook.swift.transport.ClientEventHandler;
+import com.facebook.swift.transport.ConnectionContext;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;

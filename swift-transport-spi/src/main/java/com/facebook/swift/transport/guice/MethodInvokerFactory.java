@@ -13,11 +13,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.guice;
+package com.facebook.swift.transport.guice;
 
-import com.facebook.swift.client.AddressSelector;
-import com.facebook.swift.client.MethodInvoker;
-import com.facebook.swift.service.ThriftClientConfig;
+import com.facebook.swift.transport.AddressSelector;
+import com.facebook.swift.transport.MethodInvoker;
 
 import java.lang.annotation.Annotation;
 

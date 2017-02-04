@@ -13,11 +13,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client;
+package com.facebook.swift.transport;
 
 import com.facebook.swift.codec.ThriftCodec;
+import com.google.common.base.Preconditions;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static java.util.Objects.requireNonNull;
 
 public final class ParameterMetadata
 {
@@ -27,9 +29,10 @@ public final class ParameterMetadata
 
     public ParameterMetadata(short id, String name, ThriftCodec<Object> codec)
     {
+        Preconditions.checkArgument(id >= 0, "id is negative");
         this.id = id;
-        this.name = name;
-        this.codec = codec;
+        this.name = requireNonNull(name, "name is null");
+        this.codec = requireNonNull(codec, "codec is null");
     }
 
     public short getId()

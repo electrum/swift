@@ -15,7 +15,7 @@
  */
 package com.facebook.swift.client.guice;
 
-import com.facebook.swift.client.ClientEventHandler;
+import com.facebook.swift.transport.ClientEventHandler;
 import com.google.inject.multibindings.Multibinder;
 
 import static java.util.Objects.requireNonNull;

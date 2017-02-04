@@ -15,10 +15,10 @@
  */
 package com.facebook.swift.client.nifty;
 
-import com.facebook.swift.client.AddressSelector;
-import com.facebook.swift.client.ClientEventHandler;
-import com.facebook.swift.client.MethodInvoker;
-import com.facebook.swift.client.MethodMetadata;
+import com.facebook.swift.transport.AddressSelector;
+import com.facebook.swift.transport.ClientEventHandler;
+import com.facebook.swift.transport.MethodInvoker;
+import com.facebook.swift.transport.MethodMetadata;
 import com.google.common.net.HostAndPort;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
