@@ -16,7 +16,6 @@
 package com.facebook.swift.client;
 
 import com.facebook.nifty.client.NiftyClient;
-import com.facebook.swift.client.guice.DefaultClient;
 import com.facebook.swift.client.scribe.apache.LogEntry;
 import com.facebook.swift.client.scribe.apache.ResultCode;
 import com.facebook.swift.client.scribe.apache.ScribeService;
@@ -74,7 +73,7 @@ import java.util.Set;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
-import static com.facebook.swift.client.guice.SwiftClientAnnotationFactory.getSwiftClientAnnotation;
+import static com.facebook.swift.client.address.SimpleAddressSelectorBinder.simpleAddressSelector;
 import static com.facebook.swift.client.guice.SwiftClientBinder.swiftClientBinder;
 import static com.google.common.collect.Iterables.concat;
 import static com.google.common.collect.Lists.newArrayList;
@@ -282,19 +281,13 @@ public class TestNiftyMethodInvoker
 
     private int logSwiftClientBinder(HostAndPort address, List<com.facebook.swift.client.scribe.swift.LogEntry> entries, Module transportModule)
     {
-        AddressSelector addressSelector = context -> ImmutableList.of(address);
-
         Bootstrap app = new Bootstrap(
                 new ThriftCodecModule(),
                 transportModule,
-                binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class),
-                binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class, CustomClient.class),
-                binder -> binder.bind(AddressSelector.class)
-                        .annotatedWith(getSwiftClientAnnotation(Scribe.class, DefaultClient.class))
-                        .toInstance(addressSelector),
-                binder -> binder.bind(AddressSelector.class)
-                        .annotatedWith(getSwiftClientAnnotation(Scribe.class, CustomClient.class))
-                        .toInstance(addressSelector),
+                binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class)
+                        .withAddressSelector(simpleAddressSelector()),
+                binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class, CustomClient.class)
+                        .withAddressSelector(simpleAddressSelector()),
                 binder -> binder.bind(ScribeUser.class).in(Scopes.SINGLETON));
 
         LifeCycleManager lifeCycleManager = null;
@@ -302,6 +295,8 @@ public class TestNiftyMethodInvoker
         try {
             Injector injector = app
                     .strictConfig()
+                    .setRequiredConfigurationProperty("scribe.addresses", address.toString())
+                    .setRequiredConfigurationProperty("scribe.CustomClient.addresses", address.toString())
                     .doNotInitializeLogging()
                     .initialize();
 

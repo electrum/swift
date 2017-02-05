@@ -86,10 +86,10 @@
     <air.check.skip-pmd>true</air.check.skip-pmd>
     <air.check.skip-jacoco>true</air.check.skip-jacoco>
 
-    <dep.airlift.version>0.141-SNAPSHOT</dep.airlift.version>
+    <dep.airlift.version>0.142-SNAPSHOT</dep.airlift.version>
     <dep.antlr.version>3.5.2</dep.antlr.version>
     <dep.maven-api.version>3.2.5</dep.maven-api.version>
-    <dep.fb.nifty.version>0.24.0-SNAPSHOT</dep.fb.nifty.version>
+    <dep.fb.nifty.version>0.23.0</dep.fb.nifty.version>
     <dep.jetty.version>9.3.13.M0</dep.jetty.version>
   </properties>
 

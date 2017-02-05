@@ -13,19 +13,14 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client;
+package com.facebook.swift.client.guice;
 
-import org.apache.thrift.TException;
+import com.google.inject.Binder;
 
-/**
- * Runtime equivalent of TException.  If a swift client receives a TException
- * for a method that doesn't declare TException to be thrown, the underlying
- * exception is wrapped in this class and rethrown.
- */
-public class RuntimeTException extends RuntimeException
+import java.lang.annotation.Annotation;
+
+@FunctionalInterface
+public interface AddressSelectorBinder
 {
-    public RuntimeTException(String message, TException cause)
-    {
-        super(message, cause);
-    }
+    void bind(Binder binder, Annotation annotation, String prefix);
 }

@@ -25,8 +25,6 @@ import org.apache.thrift.TApplicationException;
  */
 public class RuntimeTApplicationException extends RuntimeTException
 {
-    private static final long serialVersionUID = 1L;
-
     public RuntimeTApplicationException(String message, TApplicationException cause)
     {
         super(message, cause);

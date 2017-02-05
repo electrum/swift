@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Facebook, Inc.
+ * Copyright (C) 2012 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -41,7 +41,6 @@ import java.util.Set;
 
 import static com.facebook.swift.client.ThriftServiceMetadata.getThriftServiceAnnotation;
 import static com.facebook.swift.client.guice.SwiftClientAnnotationFactory.getSwiftClientAnnotation;
-import static com.google.inject.multibindings.Multibinder.newSetBinder;
 import static io.airlift.configuration.ConfigBinder.configBinder;
 import static java.util.Objects.requireNonNull;
 import static org.weakref.jmx.guice.ExportBinder.newExporter;
@@ -59,7 +58,7 @@ public class SwiftClientBinder
 
     private SwiftClientBinder(Binder binder)
     {
-        this.binder = requireNonNull(binder, "binder is null").skipSources(this.getClass());
+        this.binder = binder.skipSources(this.getClass());
     }
 
     public <T> SwiftClientBindingBuilder bindSwiftClient(Class<T> clientInterface)
@@ -93,8 +92,8 @@ public class SwiftClientBinder
 
         TypeLiteral<SwiftClient<T>> typeLiteral = swiftClientTypeLiteral(clientInterface);
 
-        Provider<T> instanceProvider = new SwiftClientInstanceProvider<>(clientInterface, annotation);
-        Provider<SwiftClient<T>> factoryProvider = new SwiftClientProvider<>(clientInterface, annotation);
+        Provider<T> instanceProvider = new SwiftClientInstanceProvider<T>(clientAnnotation, Key.get(typeLiteral, annotation));
+        Provider<SwiftClient<T>> factoryProvider = new SwiftClientProvider<>(clientInterface, clientAnnotation);
 
         binder.bind(Key.get(clientInterface, annotation)).toProvider(instanceProvider).in(Scopes.SINGLETON);
         binder.bind(Key.get(typeLiteral, annotation)).toProvider(factoryProvider).in(Scopes.SINGLETON);
@@ -106,8 +105,7 @@ public class SwiftClientBinder
 
 //        jmxExport(binder, key, typeName, clientName);
 
-        return new SwiftClientBindingBuilder(
-                newSetBinder(binder, new TypeLiteral<ClientEventHandler<?>>() {}, clientAnnotation));
+        return new SwiftClientBindingBuilder(binder, clientAnnotation, configPrefix);
     }
 
     private static void jmxExport(Binder binder, Key<?> key, String typeName, String clientName)
@@ -140,41 +138,46 @@ public class SwiftClientBinder
     }
 
     private static class SwiftClientInstanceProvider<T>
-            extends AbstractAnnotatedProvider<T, T>
+            extends AbstractAnnotatedProvider<T>
     {
-        public SwiftClientInstanceProvider(Class<T> clientInterface, Class<? extends Annotation> annotation)
+        private final Key<SwiftClient<T>> key;
+
+        public SwiftClientInstanceProvider(Annotation annotation, Key<SwiftClient<T>> key)
         {
-            super(clientInterface, annotation);
+            super(annotation);
+            this.key = requireNonNull(key, "key is null");
         }
 
         @Override
-        protected T get(Injector injector, Class<T> clientInterface, Class<? extends Annotation> annotation)
+        protected T get(Injector injector, Annotation annotation)
         {
-            return injector.getInstance(Key.get(swiftClientTypeLiteral(clientInterface), annotation)).get();
+            return injector.getInstance(key).get();
         }
     }
 
     private static class SwiftClientProvider<T>
-            extends AbstractAnnotatedProvider<T, SwiftClient<T>>
+            extends AbstractAnnotatedProvider<SwiftClient<T>>
     {
-        public SwiftClientProvider(Class<T> clientInterface, Class<? extends Annotation> annotation)
+        private final Class<T> clientInterface;
+
+        public SwiftClientProvider(Class<T> clientInterface, Annotation annotation)
         {
-            super(clientInterface, annotation);
+            super(annotation);
+            this.clientInterface = requireNonNull(clientInterface, "clientInterface is null");
         }
 
         @Override
-        protected SwiftClient<T> get(Injector injector, Class<T> clientInterface, Class<? extends Annotation> annotation)
+        protected SwiftClient<T> get(Injector injector, Annotation annotation)
         {
             MethodInvokerFactory methodInvokerFactory = injector.getInstance(MethodInvokerFactory.class);
             SwiftClientFactory proxyFactory = injector.getInstance(SwiftClientFactory.class);
+            AddressSelector addressSelector = injector.getInstance(Key.get(AddressSelector.class, annotation));
 
-            Annotation clientAnnotation = getSwiftClientAnnotation(clientInterface, annotation);
-
-            AddressSelector addressSelector = injector.getInstance(Key.get(AddressSelector.class, clientAnnotation));
             List<ClientEventHandler<?>> eventHandlers = ImmutableList.copyOf(injector.getInstance(
-                    Key.get(new TypeLiteral<Set<ClientEventHandler<?>>>() {}, clientAnnotation)));
+                    Key.get(new TypeLiteral<Set<ClientEventHandler<?>>>() {}, annotation)));
 
-            MethodInvoker invoker = methodInvokerFactory.createMethodInvoker(addressSelector, clientAnnotation);
+            MethodInvoker invoker = methodInvokerFactory.createMethodInvoker(addressSelector, annotation);
+
             return proxyFactory.createSwiftClient(invoker, clientInterface, eventHandlers);
         }
     }

@@ -16,37 +16,43 @@
 package com.facebook.swift.client.guice;
 
 import com.facebook.swift.transport.ClientEventHandler;
+import com.google.inject.Binder;
+import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
+import java.lang.annotation.Annotation;
+
+import static com.google.inject.multibindings.Multibinder.newSetBinder;
 import static java.util.Objects.requireNonNull;
 
 public class SwiftClientBindingBuilder
 {
-    private final Multibinder<ClientEventHandler<?>> clientEventHandlers;
+    private final Binder binder;
+    private final Annotation annotation;
+    private final String prefix;
 
-    public SwiftClientBindingBuilder(Multibinder<ClientEventHandler<?>> clientEventHandlers)
+    SwiftClientBindingBuilder(Binder binder, Annotation annotation, String prefix)
     {
-        this.clientEventHandlers = requireNonNull(clientEventHandlers, "clientEventHandlers is null");
+        this.binder = binder.skipSources(getClass());
+        this.annotation = requireNonNull(annotation, "annotation is null");
+        this.prefix = requireNonNull(prefix, "prefix is null");
+        eventBinder(); // initialize binding
     }
 
     public SwiftClientBindingBuilder withEventHandler(Class<? extends ClientEventHandler<?>> eventHandler)
     {
-        clientEventHandlers.addBinding().to(eventHandler);
+        eventBinder().addBinding().to(eventHandler);
         return this;
     }
 
-//    public SwiftClientBindingBuilder withAddressSelector(Class<? extends AddressSelector> addressSelector)
-//    {
-//        return this;
-//    }
-//
-//    public SwiftClientBindingBuilder withAddressSelector(Class<? extends Annotation> annotationType)
-//    {
-//        return withAddressSelector(Key.get(AddressSelector.class, annotationType));
-//    }
-//
-//    public SwiftClientBindingBuilder withAddressSelector(Key<?> key)
-//    {
-//        return this;
-//    }
+    public SwiftClientBindingBuilder withAddressSelector(AddressSelectorBinder selectorBinder)
+    {
+        selectorBinder.bind(binder, annotation, prefix);
+        return this;
+    }
+
+    private Multibinder<ClientEventHandler<?>> eventBinder()
+    {
+        return newSetBinder(binder, new TypeLiteral<ClientEventHandler<?>>() {}, annotation);
+    }
 }

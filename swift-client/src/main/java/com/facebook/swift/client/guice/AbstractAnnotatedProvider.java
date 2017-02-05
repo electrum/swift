@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Facebook, Inc.
+ * Copyright (C) 2012 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -26,17 +26,15 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
-abstract class AbstractAnnotatedProvider<C, T>
+public abstract class AbstractAnnotatedProvider<T>
         implements Provider<T>
 {
-    private final Class<? extends Annotation> annotation;
-    private final Class<C> type;
+    private final Annotation annotation;
     private Injector injector;
 
-    protected AbstractAnnotatedProvider(Class<C> type, Class<? extends Annotation> annotation)
+    protected AbstractAnnotatedProvider(Annotation annotation)
     {
         this.annotation = requireNonNull(annotation, "annotation is null");
-        this.type = requireNonNull(type, "type is null");
     }
 
     @Inject
@@ -49,10 +47,10 @@ abstract class AbstractAnnotatedProvider<C, T>
     public final T get()
     {
         checkState(injector != null, "injector was not set");
-        return get(injector, type, annotation);
+        return get(injector, annotation);
     }
 
-    protected abstract T get(Injector injector, Class<C> type, Class<? extends Annotation> annotation);
+    protected abstract T get(Injector injector, Annotation annotation);
 
     @Override
     public final boolean equals(Object obj)
@@ -63,14 +61,13 @@ abstract class AbstractAnnotatedProvider<C, T>
         if ((obj == null) || (getClass() != obj.getClass())) {
             return false;
         }
-        AbstractAnnotatedProvider<?, ?> other = (AbstractAnnotatedProvider<?, ?>) obj;
-        return Objects.equals(this.type, other.type) &&
-                Objects.equals(this.annotation, other.annotation);
+        AbstractAnnotatedProvider<?> other = (AbstractAnnotatedProvider<?>) obj;
+        return Objects.equals(this.annotation, other.annotation);
     }
 
     @Override
     public final int hashCode()
     {
-        return Objects.hash(type, annotation);
+        return Objects.hash(annotation);
     }
 }
