@@ -27,10 +27,9 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>swift-service</artifactId>
+  <artifactId>swift-transport-nifty</artifactId>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
-  <description>Annotation based encoder and decoder for Thrift</description>
 
   <properties>
     <air.main.basedir>${project.parent.basedir}</air.main.basedir>
@@ -50,11 +49,6 @@
     <dependency>
       <groupId>com.facebook.swift</groupId>
       <artifactId>swift-transport-spi</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.facebook.swift</groupId>
-      <artifactId>swift-transport-nifty</artifactId>
     </dependency>
 
     <dependency>
@@ -78,11 +72,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.facebook.nifty</groupId>
-      <artifactId>nifty-ssl</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>io.airlift</groupId>
       <artifactId>jmx</artifactId>
       <scope>test</scope>
@@ -95,28 +84,12 @@
 
     <dependency>
       <groupId>io.airlift</groupId>
-      <artifactId>stats</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.airlift</groupId>
       <artifactId>units</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.airlift</groupId>
-      <artifactId>log</artifactId>
     </dependency>
 
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-multibindings</artifactId>
       <optional>true</optional>
     </dependency>
 
@@ -140,11 +113,6 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>annotations</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.weakref</groupId>
-      <artifactId>jmxutils</artifactId>
     </dependency>
 
     <dependency>

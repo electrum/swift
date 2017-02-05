@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Facebook, Inc.
+ * Copyright (C) 2012 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -13,14 +13,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty.scribe.swift;
 
-import com.google.common.net.HostAndPort;
-import com.google.common.util.concurrent.ListenableFuture;
-
-public interface NiftyConnectionManager
+public enum ResultCode
 {
-    ListenableFuture<NiftyConnection> getConnection(HostAndPort address);
-
-    void returnConnection(NiftyConnection connection);
+    OK, TRY_LATER
 }

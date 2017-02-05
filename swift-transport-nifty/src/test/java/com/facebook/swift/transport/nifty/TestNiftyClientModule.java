@@ -13,27 +13,18 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
-import com.facebook.swift.service.Scribe;
-import com.facebook.swift.service.ThriftClientConfig;
+import com.facebook.swift.transport.SwiftClientConfig;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import io.airlift.bootstrap.Bootstrap;
 import org.testng.annotations.Test;
 
-import javax.inject.Qualifier;
-
 import java.lang.annotation.Annotation;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
-import static com.facebook.swift.client.guice.SwiftClientAnnotationFactory.getSwiftClientAnnotation;
+import static com.google.inject.name.Names.named;
 import static io.airlift.configuration.ConfigBinder.configBinder;
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.PARAMETER;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.testng.Assert.assertNotNull;
 
 public class TestNiftyClientModule
@@ -42,11 +33,11 @@ public class TestNiftyClientModule
     public void test()
             throws Exception
     {
-        Annotation clientAnnotation = getSwiftClientAnnotation(Scribe.class, TestQualifiedAnnotation.class);
+        Annotation clientAnnotation = named("test");
         Bootstrap bootstrap = new Bootstrap(
                 new NiftyClientModule(),
                 binder -> {
-                    configBinder(binder).bindConfig(ThriftClientConfig.class, clientAnnotation);
+                    configBinder(binder).bindConfig(SwiftClientConfig.class, clientAnnotation);
                 });
 
 
@@ -55,15 +46,7 @@ public class TestNiftyClientModule
                 .strictConfig()
                 .initialize();
 
-        ThriftClientConfig clientConfig = injector.getInstance(Key.get(ThriftClientConfig.class, clientAnnotation));
-        NiftyClientConfig niftyClientConfig = injector.getInstance(Key.get(NiftyClientConfig.class, clientAnnotation));
-        assertNotNull(clientConfig);
-    }
-
-    @Target({FIELD, PARAMETER, METHOD})
-    @Retention(RUNTIME)
-    @Qualifier
-    @interface TestQualifiedAnnotation
-    {
+        assertNotNull(injector.getInstance(Key.get(SwiftClientConfig.class, clientAnnotation)));
+        assertNotNull(injector.getInstance(Key.get(NiftyClientConfig.class, clientAnnotation)));
     }
 }

@@ -13,9 +13,8 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
-import com.facebook.swift.service.ThriftClientConfig;
 import com.google.common.base.Throwables;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -51,7 +50,7 @@ public class NiftyConnectionPool
     @GuardedBy("this")
     private boolean closed;
 
-    public NiftyConnectionPool(NiftyConnectionManager connectionFactory, ThriftClientConfig config)
+    public NiftyConnectionPool(NiftyConnectionManager connectionFactory, NiftyClientConfig config)
     {
         this.connectionFactory = connectionFactory;
         requireNonNull(config, "config is null");

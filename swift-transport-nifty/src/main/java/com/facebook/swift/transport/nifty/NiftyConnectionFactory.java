@@ -13,18 +13,16 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
 import com.facebook.nifty.client.NiftyClient;
 import com.facebook.nifty.client.NiftyClientChannel;
 import com.facebook.nifty.client.NiftyClientConnector;
-import com.facebook.swift.service.ThriftClientConfig;
 import com.facebook.swift.transport.AddressSelector;
 import com.google.common.base.Function;
 import com.google.common.net.HostAndPort;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.inject.Inject;
 import io.airlift.units.Duration;
 import org.apache.thrift.transport.TTransportException;
 
@@ -45,12 +43,11 @@ public class NiftyConnectionFactory
     private final int maxFrameSize;
     private final HostAndPort socksProxy;
 
-    @Inject
     public NiftyConnectionFactory(
             NiftyClient niftyClient,
             NiftyClientConnectorFactory niftyClientConnectorFactory,
             AddressSelector addressSelector,
-            ThriftClientConfig config)
+            NiftyClientConfig config)
     {
         this.niftyClient = requireNonNull(niftyClient, "niftyClient is null");
         this.niftyClientConnectorFactory = requireNonNull(niftyClientConnectorFactory, "niftyClientConnectorFactory is null");

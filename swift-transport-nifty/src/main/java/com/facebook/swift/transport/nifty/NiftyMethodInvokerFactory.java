@@ -13,10 +13,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
 import com.facebook.nifty.client.NiftyClient;
-import com.facebook.swift.service.ThriftClientConfig;
 import com.facebook.swift.transport.AddressSelector;
 import com.facebook.swift.transport.MethodInvoker;
 import com.facebook.swift.transport.guice.MethodInvokerFactory;
@@ -43,12 +42,11 @@ public class NiftyMethodInvokerFactory
     @Override
     public MethodInvoker createMethodInvoker(AddressSelector addressSelector, Annotation qualifier)
     {
-        ThriftClientConfig thriftClientConfig = injector.getInstance(Key.get(ThriftClientConfig.class, qualifier));
         NiftyClientConfig niftyClientConfig = injector.getInstance(Key.get(NiftyClientConfig.class, qualifier));
 
-        NiftyConnectionManager connectionManager = new NiftyConnectionFactory(niftyClient, new FramedNiftyClientConnectorFactory(), addressSelector, thriftClientConfig);
+        NiftyConnectionManager connectionManager = new NiftyConnectionFactory(niftyClient, new FramedNiftyClientConnectorFactory(), addressSelector, niftyClientConfig);
         if (niftyClientConfig.isPoolEnabled()) {
-            connectionManager = new NiftyConnectionPool(connectionManager, thriftClientConfig);
+            connectionManager = new NiftyConnectionPool(connectionManager, niftyClientConfig);
         }
         return new NiftyMethodInvoker(connectionManager, addressSelector);
     }

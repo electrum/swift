@@ -13,22 +13,13 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
-import io.airlift.configuration.Config;
+import com.facebook.nifty.client.NiftyClientChannel;
+import com.facebook.nifty.client.NiftyClientConnector;
+import com.google.common.net.HostAndPort;
 
-public class NiftyClientConfig
+public interface NiftyClientConnectorFactory
 {
-    private boolean poolEnabled;
-
-    public boolean isPoolEnabled()
-    {
-        return poolEnabled;
-    }
-
-    @Config("thrift.client.pool-enabled")
-    public void setPoolEnabled(boolean poolEnabled)
-    {
-        this.poolEnabled = poolEnabled;
-    }
+    NiftyClientConnector<NiftyClientChannel> createConnector(HostAndPort address);
 }

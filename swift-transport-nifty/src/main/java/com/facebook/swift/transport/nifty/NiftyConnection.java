@@ -13,13 +13,12 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
 import com.facebook.nifty.client.RequestChannel;
 import com.facebook.nifty.core.RequestContext;
 import com.facebook.nifty.core.RequestContexts;
 import com.facebook.nifty.duplex.TDuplexProtocolFactory;
-import com.facebook.swift.client.MethodEventHandler;
 import com.facebook.swift.transport.ClientEventHandler;
 import com.facebook.swift.transport.ConnectionContext;
 import com.facebook.swift.transport.MethodMetadata;

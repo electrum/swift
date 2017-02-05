@@ -13,20 +13,21 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
-import com.facebook.nifty.client.FramedClientConnector;
-import com.facebook.nifty.client.NiftyClientChannel;
-import com.facebook.nifty.client.NiftyClientConnector;
-import com.google.common.net.HostAndPort;
+import com.google.common.util.concurrent.ListenableFuture;
 
-public class FramedNiftyClientConnectorFactory
-        implements NiftyClientConnectorFactory
+public interface InvocationFunction<C>
 {
-    @Override
-    public NiftyClientConnector<NiftyClientChannel> createConnector(HostAndPort address)
+    ListenableFuture<Object> invokeOn(C connection);
+
+    default boolean isRetryable(Throwable throwable)
     {
-        // these objects have a bad generics design
-        return (NiftyClientConnector<NiftyClientChannel>) (Object) new FramedClientConnector(address);
+        return false;
+    }
+
+    default boolean isHostDownException(Throwable throwable)
+    {
+        return false;
     }
 }

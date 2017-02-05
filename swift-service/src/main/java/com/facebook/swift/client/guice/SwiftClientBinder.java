@@ -17,10 +17,10 @@ package com.facebook.swift.client.guice;
 
 import com.facebook.swift.client.SwiftClient;
 import com.facebook.swift.client.SwiftClientFactory;
-import com.facebook.swift.service.ThriftClientConfig;
 import com.facebook.swift.transport.AddressSelector;
 import com.facebook.swift.transport.ClientEventHandler;
 import com.facebook.swift.transport.MethodInvoker;
+import com.facebook.swift.transport.SwiftClientConfig;
 import com.facebook.swift.transport.guice.MethodInvokerFactory;
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeParameter;
@@ -88,7 +88,7 @@ public class SwiftClientBinder
 
         Annotation clientAnnotation = getSwiftClientAnnotation(clientInterface, annotation);
 
-        configBinder(binder).bindConfig(ThriftClientConfig.class, clientAnnotation, configPrefix);
+        configBinder(binder).bindConfig(SwiftClientConfig.class, clientAnnotation, configPrefix);
 
         TypeLiteral<SwiftClient<T>> typeLiteral = swiftClientTypeLiteral(clientInterface);
 

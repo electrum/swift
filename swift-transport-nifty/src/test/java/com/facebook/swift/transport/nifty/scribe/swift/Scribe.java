@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Facebook, Inc.
+ * Copyright (C) 2012 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License. You may obtain
@@ -13,13 +13,21 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty.scribe.swift;
 
-import com.facebook.nifty.client.NiftyClientChannel;
-import com.facebook.nifty.client.NiftyClientConnector;
-import com.google.common.net.HostAndPort;
+import com.facebook.swift.service.ThriftMethod;
+import com.facebook.swift.service.ThriftService;
+import org.apache.thrift.TException;
 
-public interface NiftyClientConnectorFactory
+import java.io.Closeable;
+import java.util.List;
+
+@ThriftService("scribe")
+public interface Scribe extends Closeable
 {
-    NiftyClientConnector<NiftyClientChannel> createConnector(HostAndPort address);
+    @ThriftMethod("Log")
+    ResultCode log(List<LogEntry> messages) throws TException;
+
+    @Override
+    void close();
 }

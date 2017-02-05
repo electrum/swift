@@ -13,10 +13,10 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.facebook.swift.client.nifty;
+package com.facebook.swift.transport.nifty;
 
 import com.facebook.nifty.client.NiftyClient;
-import com.facebook.swift.service.ThriftClientConfig;
+import com.facebook.swift.transport.SwiftClientConfig;
 import com.facebook.swift.transport.guice.MethodInvokerFactory;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -40,7 +40,7 @@ public class NiftyClientModule
 
     private void bindNiftyClientConfig(ConfigurationBinding<?> binding, ConfigBinder configBinder)
     {
-        if (binding.getConfigClass().equals(ThriftClientConfig.class)) {
+        if (binding.getConfigClass().equals(SwiftClientConfig.class)) {
             configBinder.bindConfig(NiftyClientConfig.class, binding.getKey().getAnnotation(), binding.getPrefix().orElse(null));
         }
     }
