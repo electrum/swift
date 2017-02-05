@@ -15,15 +15,11 @@
  */
 package com.facebook.swift.client.guice;
 
-import com.facebook.nifty.client.NiftyClient;
 import com.facebook.swift.client.AddressSelector;
 import com.facebook.swift.client.ClientEventHandler;
+import com.facebook.swift.client.MethodInvoker;
 import com.facebook.swift.client.SwiftClient;
 import com.facebook.swift.client.SwiftClientFactory;
-import com.facebook.swift.client.nifty.FramedNiftyClientConnectorFactory;
-import com.facebook.swift.client.nifty.NiftyConnectionFactory;
-import com.facebook.swift.client.nifty.NiftyConnectionManager;
-import com.facebook.swift.client.nifty.NiftyMethodInvoker;
 import com.facebook.swift.service.ThriftClientConfig;
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeParameter;
@@ -61,7 +57,7 @@ public class SwiftClientBinder
 
     private SwiftClientBinder(Binder binder)
     {
-        this.binder = requireNonNull(binder, "binder is null");
+        this.binder = requireNonNull(binder, "binder is null").skipSources(this.getClass());
     }
 
     public <T> SwiftClientBindingBuilder bindSwiftClient(Class<T> clientInterface)
@@ -167,24 +163,16 @@ public class SwiftClientBinder
         @Override
         protected SwiftClient<T> get(Injector injector, Class<T> clientInterface, Class<? extends Annotation> annotation)
         {
-            NiftyClient niftyClient = injector.getInstance(NiftyClient.class);
+            MethodInvokerFactory methodInvokerFactory = injector.getInstance(MethodInvokerFactory.class);
             SwiftClientFactory proxyFactory = injector.getInstance(SwiftClientFactory.class);
 
             Annotation clientAnnotation = getSwiftClientAnnotation(clientInterface, annotation);
 
-            ThriftClientConfig clientConfig = injector.getInstance(Key.get(ThriftClientConfig.class, clientAnnotation));
             AddressSelector addressSelector = injector.getInstance(Key.get(AddressSelector.class, clientAnnotation));
             List<ClientEventHandler<?>> eventHandlers = ImmutableList.copyOf(injector.getInstance(
                     Key.get(new TypeLiteral<Set<ClientEventHandler<?>>>() {}, clientAnnotation)));
 
-            NiftyConnectionManager connectionManager = new NiftyConnectionFactory(
-                    niftyClient,
-                    new FramedNiftyClientConnectorFactory(),
-                    addressSelector,
-                    clientConfig);
-
-            NiftyMethodInvoker invoker = new NiftyMethodInvoker(connectionManager, addressSelector);
-
+            MethodInvoker invoker = methodInvokerFactory.createMethodInvoker(addressSelector, clientAnnotation);
             return proxyFactory.createSwiftClient(invoker, clientInterface, eventHandlers);
         }
     }

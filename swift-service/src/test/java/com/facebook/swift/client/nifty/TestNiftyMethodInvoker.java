@@ -33,7 +33,6 @@ import com.facebook.swift.service.ThriftClientConfig;
 import com.facebook.swift.service.ThriftClientManager;
 import com.facebook.swift.service.ThriftScribeService;
 import com.facebook.swift.service.async.AsyncScribe;
-import com.facebook.swift.service.guice.ThriftClientModule;
 import com.facebook.swift.service.scribe.LogEntry;
 import com.facebook.swift.service.scribe.ResultCode;
 import com.facebook.swift.service.scribe.scribe;
@@ -296,7 +295,7 @@ public class TestNiftyMethodInvoker
 
         Bootstrap app = new Bootstrap(
                 new ThriftCodecModule(),
-                new ThriftClientModule(),
+                new NiftyClientModule(),
                 binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class),
                 binder -> swiftClientBinder(binder).bindSwiftClient(Scribe.class, CustomClient.class),
                 binder -> binder.bind(AddressSelector.class)
