@@ -39,9 +39,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Set;
 
+import static com.facebook.swift.client.ThriftServiceMetadata.getThriftServiceAnnotation;
 import static com.facebook.swift.client.guice.SwiftClientAnnotationFactory.getSwiftClientAnnotation;
-import static com.facebook.swift.service.ThriftClientManager.DEFAULT_NAME;
-import static com.facebook.swift.service.metadata.ThriftServiceMetadata.getThriftServiceAnnotation;
 import static com.google.inject.multibindings.Multibinder.newSetBinder;
 import static io.airlift.configuration.ConfigBinder.configBinder;
 import static java.util.Objects.requireNonNull;
@@ -49,6 +48,8 @@ import static org.weakref.jmx.guice.ExportBinder.newExporter;
 
 public class SwiftClientBinder
 {
+    public static final String DEFAULT_NAME = "default";
+
     public static SwiftClientBinder swiftClientBinder(Binder binder)
     {
         return new SwiftClientBinder(binder);

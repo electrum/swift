@@ -16,7 +16,6 @@
 package com.facebook.swift.client;
 
 import com.facebook.swift.client.StatsClientEventHandler.PerCallMethodStats;
-import com.facebook.swift.service.ThriftMethodStats;
 import com.facebook.swift.transport.ClientEventHandler;
 import com.facebook.swift.transport.ConnectionContext;
 import io.airlift.units.Duration;

@@ -55,6 +55,7 @@
   <modules>
     <module>swift-test-utils</module>
     <module>swift-annotations</module>
+    <module>swift-client</module>
     <module>swift-codec</module>
     <module>swift-idl-parser</module>
     <module>swift-javadoc</module>
@@ -128,6 +129,12 @@
       <dependency>
         <groupId>com.facebook.swift</groupId>
         <artifactId>swift-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.facebook.swift</groupId>
+        <artifactId>swift-client</artifactId>
         <version>${project.version}</version>
       </dependency>
 

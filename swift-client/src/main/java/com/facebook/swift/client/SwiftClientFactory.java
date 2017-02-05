@@ -18,8 +18,6 @@ package com.facebook.swift.client;
 import com.facebook.swift.codec.ThriftCodec;
 import com.facebook.swift.codec.ThriftCodecManager;
 import com.facebook.swift.codec.metadata.ThriftType;
-import com.facebook.swift.service.metadata.ThriftMethodMetadata;
-import com.facebook.swift.service.metadata.ThriftServiceMetadata;
 import com.facebook.swift.transport.ClientEventHandler;
 import com.facebook.swift.transport.MethodInvoker;
 import com.facebook.swift.transport.MethodMetadata;
