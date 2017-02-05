@@ -64,6 +64,7 @@
     <module>swift-maven-plugin</module>
     <module>swift-load-generator</module>
     <module>swift-transport-spi</module>
+    <module>swift-transport-apache</module>
     <module>swift-transport-nifty</module>
     <module>swift2thrift-generator-cli</module>
   </modules>
@@ -133,6 +134,12 @@
       <dependency>
         <groupId>com.facebook.swift</groupId>
         <artifactId>swift-transport-spi</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.facebook.swift</groupId>
+        <artifactId>swift-transport-apache</artifactId>
         <version>${project.version}</version>
       </dependency>
 
